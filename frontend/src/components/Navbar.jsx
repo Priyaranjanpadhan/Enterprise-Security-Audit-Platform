@@ -1,0 +1,34 @@
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+function Navbar(){
+    const {user, logout} = useAuth;
+    const navigate = useNavigate();
+    async function handleLogout(){
+        await logout();
+        navigate("/login");
+    }
+    return(
+        <nav className="bg-gray-800 border-b border-gray-700 px-6 py-3 flex justify-between items-center">
+            {/* Logo and title */}
+            <div className="text-white text-sl font-bold">
+                Enterprise Security Platform
+            </div>
+
+            {/* User infor and logout button */}
+            <div className="flex items-center space-x-4">
+                {/* we will use ?. just in case user is null so not crash */}
+                <span className="text-gray-300">Welcome, {user?.name}</span>
+
+                <button
+                    onClick={handleLogout}
+                    className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition-colors"
+                >
+                    Logout
+                </button>
+            </div>
+        </nav>
+    );
+}
+
+export default Navbar;
