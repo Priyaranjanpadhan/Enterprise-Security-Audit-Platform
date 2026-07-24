@@ -43,13 +43,17 @@ router.get("/", isAuthenticated, isApproved, async(req, res) => {
                 where assets.current_owner_id = $1 
                 order by assets.id asc`;
             values = [userId];
+        } else{
+            //if the user role_id is 5 then
+            //don't crash
+            return res.status(200).json([]);
         }
 
         const result = await db.query(query, values);
         res.status(200).json(result.rows);
     } catch(err){
         console.error("Error fetching assets:", err);
-        res.status(500).json({error: "Failed to fetch assets"});
+        res.status(500).json({error: "Acees denied. Your account is pending admin approval."});
     }
 });
 

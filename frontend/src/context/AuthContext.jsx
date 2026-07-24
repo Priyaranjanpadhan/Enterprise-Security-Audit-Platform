@@ -15,7 +15,7 @@ export const AuthProvider = ({children}) => {
     //useEffect will run exactly once, the millisecond the website opens.
     //A user was logged in yesterday and closed their laptop. Today, they type localhost:5173 into their browser and hit Enter. Before the screen even finishes painting the colors, this function fires, checks their session cookie, and logs them in automatically so they skip the Login page entirely. 
     React.useEffect(() => {
-        const checkUser = async() => {
+        async function checkUser() {
             try{
                 const response = await api.get("/user/profile");
                 setUser(response.data);
@@ -26,18 +26,18 @@ export const AuthProvider = ({children}) => {
             }
         };
 
-        checkUser();
+        checkUser();//it actually executes it
     }, []);
 
     //helper function to log a user in and update the global state
     //When we build the Login.jsx page, the user will type admin@company.com and password123. When they click the button, Login.jsx will send those details to your Express server. Express checks PostgreSQL, verifies the password, and replies with: { id: 1, name: "Priya", role_id: 1 }.
     //Login.jsx will then take that data and feed it into this function by calling login(response.data). Now, the global bubble knows exactly who is using the app.
-    const login = (userData) => {
+    function login(userData) {
         setUser(userData);
     };
 
     //Helper function to log out, destroy the cookie, and clear the data
-    const logOut = async() => {
+  async function logOut() {
         try{
             await api.post("/auth/logout");
             setUser(null);

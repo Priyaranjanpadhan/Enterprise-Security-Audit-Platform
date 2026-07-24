@@ -18,7 +18,7 @@ function Login(){
         try{
             //It packages your email and password states and ships them via Axios (api.post) to your Express backend.
             const response = await api.post("/auth/login", {email, password});
-            login(response.data);
+            login(response.data.user);
             navigate("/");
         } catch(err){
             setError(err.response?.data?.message || "Invalid email or password");

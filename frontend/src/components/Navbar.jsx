@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Navbar(){
-    const {user, logout} = useAuth;
+    const {user, logOut} = useAuth();
     const navigate = useNavigate();
     async function handleLogout(){
-        await logout();
+        await logOut();
         navigate("/login");
     }
     return(

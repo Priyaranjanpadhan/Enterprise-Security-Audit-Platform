@@ -92,10 +92,12 @@ router.post("/login", async(req, res) => {
 });
 
 router.post("/logout", (req, res) => {
+    //res.session.destroy to kill the session in postgresql
     req.session.destroy((err) => {
         if(err) {
             return res.status(500).json({error: "Failed to log out."});
         }
+        //to wipe the cookies from the user's browser is exactly how professional enterprise applications handle secure logouts
         res.clearCookie("connect.sid");
         res.status(200).json({message: "Logged out successfully"});
     });
