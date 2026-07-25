@@ -5,6 +5,7 @@ import Layout from "./components/Layout.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Assets from "./pages/Assets.jsx";
+import AuditLogs from "./pages/AuditLogs.jsx";
 
 function App(){
     return(
@@ -22,6 +23,7 @@ function App(){
                     {/* When the URL is "/", it puts this text inside the <outlet /> */}
                     <Route path="/" element={<Dashboard />}/>
                     <Route path="/assets" element={<Assets />} />
+                    <Route path="/audit-logs" element={<AuditLogs />} />
                 </Route>
             </Routes>
         </BrowserRouter>

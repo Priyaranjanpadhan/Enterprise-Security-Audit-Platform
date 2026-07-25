@@ -104,4 +104,41 @@ router.put("/admin/users/:id/role", isAuthenticated, isAdmin, async(req, res) =>
     }
 });
 
+//sending the assets and alerts number to the dashboard so that everyone can see it and use it 
+router.get("/dashboard-stats", isAuthenticated, async(req, res) => {
+    try{
+        //total number of rows in the assets table
+        const assetsResult = await db.query('select count(*) from assets');
+        const totalAssets = parseInt(assetsResult.rows[0].count);
+
+        //count the total number of audit logs that haven't been resolved yet
+        const alertsResult = await db.query("select count (*) from audit_logs where status = 'open'");
+        const openAlerts = parseInt(alertsResult.rows[0].count);
+
+        res.status(200).json({
+            totalAssets,
+            openAlerts
+        });
+    } catch(err){
+        console.error("Error fetching stats: ", err);
+        res.status(500).json({error: "Failed to fetch dashboard stats"});
+    }
+});
+
+//fetching all the users for the admin dashboard
+router.get("/admin/users", isAuthenticated, isAdmin, async(req, res) => {
+    try{//role_id is the primary for ordering if any tie then id in ascending order will decide in tie-breaker
+        const result = await db.query(
+            `select id, name, email, phone, address, role_id
+            from users
+            order by role_id desc, id asc`
+        );
+
+        res.status(200).json(result.rows);
+    } catch(err){
+        console.error("Error fetching all users:", err);
+        res.status(500).json({error: "Failed to fetch users from the server."});
+    }
+});
+
 export default router;
