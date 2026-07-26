@@ -6,6 +6,9 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Assets from "./pages/Assets.jsx";
 import AuditLogs from "./pages/AuditLogs.jsx";
+import ManageUsers from "./pages/ManageUsers.jsx";
+import ReportEvent from "./pages/ReportEvent.jsx";
+import Profile from "./pages/Profile.jsx"
 
 function App(){
     return(
@@ -24,6 +27,9 @@ function App(){
                     <Route path="/" element={<Dashboard />}/>
                     <Route path="/assets" element={<Assets />} />
                     <Route path="/audit-logs" element={<AuditLogs />} />
+                    <Route path="/manage-users" element={<ManageUsers />} />
+                    <Route path="/report" element={<ReportEvent />} />
+                    <Route path="/profile" element={<Profile />} />
                 </Route>
             </Routes>
         </BrowserRouter>

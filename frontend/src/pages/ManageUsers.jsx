@@ -5,7 +5,7 @@ function ManageUsers(){
     const[users, setUsers] = React.useState([]);
     const[error, setError] = React.useState("");
     const[success, setSuccess] = React.useState("");
-    const[loadind, setLoading] = React.useState(true);
+    const[loading, setLoading] = React.useState(true);
 
     //fetch the users table when the page loads
     React.useEffect(() => {
@@ -30,7 +30,7 @@ function ManageUsers(){
             setSuccess("");
 
             //This hits the PUT route you buit earlier
-            await api.put(`user/admin/users/${userId}/role`, {
+            await api.put(`/user/admin/users/${userId}/role`, {
                 newRoleId: parseInt(newRoleId)
             });
 
@@ -56,7 +56,7 @@ function ManageUsers(){
                 </div>
             )}
             {success && (
-                <div className="p-3 text-sm text-green-400 bg-green-900/50 border border-green-50 rounded">
+                <div className="p-3 text-sm text-green-400 bg-green-900/50 border border-green-500 rounded">
                     {success}
                 </div>
             )}
@@ -84,8 +84,10 @@ function ManageUsers(){
                                 <td colSpan="5" className="px-6 py-8 text-center text-gray-500">No users found.</td>
                             </tr>
                         ) : (
-                            users.map((u) => {
-                                <tr key={u.id} className={`hover:bg-gray-750 transition-colors ${u.role_id === 5 ? 'bg-red-900/10' : ''}`}>
+                            users.map((u) => (
+                                // If an admin changes a user's role, your fetchUsers() function fires and receives a fresh array from the database. 
+                                // Without a key, React has no idea which row is which. It is forced to wipe out all 50 table rows from the screen and rebuild all 50 from scratch just to update that one tiny text change. This makes your app slow and laggy.
+                                <tr key={u.id} className={`hover:bg-gray-700/50 transition-colors ${u.role_id === 5 ? 'bg-red-900/10' : ''}`}>
                                     <td className="px-6 py-4 text-gray-500">#{u.id}</td>
                                     <td className="px-6 py-4 font-medium text-white">{u.name}</td>
                                     <td className="px-6 py-4">{u.email}</td>
@@ -108,13 +110,13 @@ function ManageUsers(){
                                         >
                                             <option value="1">Role 1: Admin</option>
                                             <option value="2">Role 2: Auditor</option>
-                                            <option value="3">Role 3: Techinician</option>
+                                            <option value="3">Role 3: Technician</option>
                                             <option value="4">Role 4: Employee</option>
                                             <option value="5">Role 5: Pending</option>
                                         </select>
                                     </td>
                                 </tr>
-                            })
+                            ))
                         )}
                     </tbody>
                 </table>
@@ -122,3 +124,5 @@ function ManageUsers(){
         </div>
     )
 }
+
+export default ManageUsers;

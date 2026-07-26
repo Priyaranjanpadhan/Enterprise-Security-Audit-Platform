@@ -62,7 +62,7 @@ function Sidebar(){
                             Administration
                         </div>
                         <li>
-                            <Link to="/admin" className={getLinkClass("/admin")}>
+                            <Link to="/manage-users" className={getLinkClass("/manage-users")}>
                                 Admin Panel
                             </Link>
                         </li>
