@@ -10,7 +10,8 @@ import { Strategy } from "passport-google-oauth20";
 import cors from "cors";
 import userRouter from "./routes/user.js";
 import assetRouter from "./routes/assets.js";
-import auditLogRouter from "./routes/audit_logs.js"
+import auditLogRouter from "./routes/audit_logs.js";
+import threatRouter from "./routes/threats.js";
 
 const app = express();
 const port = 3000;
@@ -110,6 +111,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/user", userRouter);
 app.use("/api/assets", assetRouter);
 app.use("/api/audit-logs", auditLogRouter);
+app.use("/api/threats", threatRouter);
 
 app.get("/", (req, res) => {
     res.send("<h1>Hello</h1>")
