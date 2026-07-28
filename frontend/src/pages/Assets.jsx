@@ -37,7 +37,7 @@ function Assets(){
         setShowAddForm(false); //Hide the form
         setMessage({
             type: "success",
-            text: "successText"
+            text: successText
         });
         fetchAssets();
         setTimeout(() => setMessage({
@@ -130,7 +130,7 @@ function Assets(){
                 <div className={`p-3 text-sm rounded border ${
                     message.type === 'error' ? 
                     'text-red-400 bg-red-900/50 border-red-500' : 
-                    'text-gren-400 bg-green-900/50 border-green-500'
+                    'text-green-400 bg-green-900/50 border-green-500'
                 }`} 
                 >
                     {message.text}
@@ -167,7 +167,7 @@ function Assets(){
                                 <td colSpan={5} className="px-6 py-8 text-center text-gray-500">No assets found in the system.</td>
                             </tr>
                         ) : (
-                            assets.map((asset) => {
+                            assets.map((asset) => (
                                 <tr key={asset.id} className="hover:bg-gray-700/50 transition-colors">
                                     <td className="px-6 py-4 text-gray-500">#{asset.id}</td>
                                     <td className="px-6 py-4 font-medium text-white">{asset.asset_name}</td>
@@ -193,7 +193,7 @@ function Assets(){
                                                         placeholder="User Id"
                                                         value={assignUserId}
                                                         onChange={(e) => setAssignUserId(e.target.value)}
-                                                        className="w-20 p-1 text-sm bg-gray-900 border border-gray-600 rounded text0-white"
+                                                        className="w-20 p-1 text-sm bg-gray-900 border border-gray-600 rounded text-white"
                                                     />
                                                     <button 
                                                         onClick={(e) => handleAssign(asset.id)}
@@ -229,7 +229,7 @@ function Assets(){
                                         </td>
                                     )}
                                 </tr>
-                            }) 
+                            )) 
                         )}
                     </tbody>
                 </table>

@@ -156,7 +156,7 @@ router.put("/:id", isAuthenticated, isApproved, async(req, res) => {
     }
 });
 
-router.delete(":/id", isAuthenticated, isApproved, async(req,res) => {
+router.delete("/:id", isAuthenticated, isApproved, async(req,res) => {
     try{
         const assetId = req.params.id;
         const userRoleId = req.session.user.role_id;
@@ -167,7 +167,7 @@ router.delete(":/id", isAuthenticated, isApproved, async(req,res) => {
 
         const result = await db.query(`delete from assets where id = $1 returning *`, [assetId]);
 
-        if(result.rows[0].length === 0){
+        if(result.rows.length === 0){
             return res.status(404).json({error: "Asset not found."});
         }
 
