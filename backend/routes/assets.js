@@ -126,4 +126,58 @@ router.post("/:id/assign", isAuthenticated, isApproved, async(req, res) => {
     }
 });
 
+//Edit an asset's description
+router.put("/:id", isAuthenticated, isApproved, async(req, res) => {
+    try{
+        const assetId = req.params.id;
+        const {description} = req.body;
+        const userRoleId = req.session.user.role_id;
+
+        if(userRoleId !== 1 && userRoleId !== 3){
+            return res.status(403).json({error: "Only admins and technicians can edit assets."})
+        }
+
+        const result = await db.query(
+            `update assets
+            set description = $1
+            where id = $2
+            returning *`,
+            [description, assetId]
+        );
+
+        if(result.rows.length === 0){
+            return res.status(404).json({error: "Asset not found"});
+        }
+
+        res.status(200).json({message: "Asset updated successfully!", asset: result.rows[0]});
+    } catch(err){
+        console.error("Error updating asset:", err);
+        res.status(500).json({error: "Failed to update asset."});
+    }
+});
+
+router.delete(":/id", isAuthenticated, isApproved, async(req,res) => {
+    try{
+        const assetId = req.params.id;
+        const userRoleId = req.session.user.role_id;
+
+        if(userRoleId !== 1){
+            res.status(403).json({error: "Access denied. Only admins can delete assets."})
+        }
+
+        const result = await db.query(`delete from assets where id = $1 returning *`, [assetId]);
+
+        if(result.rows[0].length === 0){
+            return res.status(404).json({error: "Asset not found."});
+        }
+
+        res.status(200).json({
+            message: "Asset successfully retired from the system."
+        })
+    } catch(err){
+        console.error("Error deleting assets:", err);
+        res.status(500).json({error: "Failed to delete assets, It may be still assigned to a user."});
+    }
+});
+
 export default router;

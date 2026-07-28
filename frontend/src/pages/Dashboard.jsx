@@ -15,6 +15,8 @@ function Dashboard(){
                 console.error("Failed to load dashboard stats", err);
             }
         }
+
+        fetchStats();
     }, []);
 
     return(

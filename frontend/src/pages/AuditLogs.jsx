@@ -1,29 +1,42 @@
 import React from "react";
 import api from "../services/api.js";
+import {useAuth} from "../context/AuthContext.jsx";
 
 function AuditLogs(){
+    const {user} = useAuth();
     const [logs, setLogs] = React.useState([]);
     const [error, setError] = React.useState("");
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
-        async function fetchLogs() {
-            try{
-                const response = await api.get("/audit-logs");
-                setLogs(response.data);
-            } catch(err){
-                if(err.response && err.response.status === 403){
-                    setError("You do not have the permission to view the security logs");
-                } else{
-                    setError("Failed to load audit logs from the server.")
-                }
-            } finally{
-                setLoading(false);
-            }
-        }
-
         fetchLogs();
     }, []);
+
+    async function fetchLogs() {
+        try{
+            const response = await api.get("/audit-logs");
+            setLogs(response.data);
+        } catch(err){
+            if(err.response && err.response.status === 403){
+                setError("You do not have the permission to view the security logs");
+            } else{
+                setError("Failed to load audit logs from the server.")
+            }
+        } finally{
+            setLoading(false);
+        }
+    }
+
+    async function handleResolve(logId){
+        try{
+            await api.put(`/audit-logs/${logId}/status`,{
+                status: 'resolved'
+            });
+            fetchLogs();
+        } catch(err){
+            setError("Failed to resolve the security event.")
+        }
+    }
 
     function getSeverityColor(severity){
         switch(severity?.toLowerCase()){
@@ -33,6 +46,8 @@ function AuditLogs(){
             default: return "bg-gray-500/20 text-gray-400 border-gray-500/50";
         }
     };
+
+    const canResolve = user?.role_id === 1 || user?.role_id === 2;
 
     return(
         <div className="space-y-6">
@@ -59,6 +74,7 @@ function AuditLogs(){
                                 <th className="px-6 py-4 font-medium">Details</th>
                                 <th className="px-6 py-4 font-medium">Severity</th>
                                 <th className="px-6 py-4 font-medium">Status</th>
+                                {canResolve && <th className="px-6 py-4 font-medium">Action</th>}
                             </tr>
                         </thead>
 
@@ -95,6 +111,20 @@ function AuditLogs(){
                                             {log.status?.toUpperCase()}
                                         </span>
                                     </td>
+                                    {canResolve && (
+                                        <td className="px-6 py-4">
+                                            {log.status === 'open' ? (
+                                                <button
+                                                    onClick={() => handleResolve(log.id)}
+                                                    className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors"
+                                                >
+                                                    Resolve
+                                                </button>
+                                            ) : (
+                                                <span className="text-gray-500 text-xs italic">Closed</span>
+                                            )}
+                                        </td>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
