@@ -79,7 +79,34 @@ function Assets(){
         }
     }
 
+    async function handleDelete(assetId){
+        if(!window.confirm("Are you sure you want to permanently delete this asset?")){
+            return;
+        }
+
+        setMessage({
+            type: "",
+            text: ""
+        });
+
+        try{
+            await api.delete(`/assets/${assetId}`);
+            setMessage({type: "success", text: "Asset successfully deleted."})
+            fetchAssets();
+            setTimeout(() => setMessage({
+                type: "",
+                text: ""
+            }), 3000);
+        } catch(err){
+            setMessage({
+                type: "error",
+                text: err.response?.data?.error || "Failed to retire asset."
+            });
+        }
+    }
+
     const canManageAssets = user?.role_id === 1 || user?.role_id === 3;
+
     return(
         <div className="space-y-6">
             <div className="flex justify-between items-center">
@@ -158,6 +185,7 @@ function Assets(){
 
                                     {canManageAssets && (
                                         <td className="px-6 py-4">
+                                            {/* The assignment button */}
                                             {assigningId === asset.id ? (
                                                 <div className="flex space-x-2">
                                                     <input 
@@ -186,6 +214,16 @@ function Assets(){
                                                     className="text-blue-400 hover:text-blue-300 text-sm font-medium transition-colors"
                                                 >
                                                     Reassign
+                                                </button>
+                                            )}
+
+                                            {/* the delete button only visible to admins */}
+                                            {user.role_id === 1 && (
+                                                <button 
+                                                    onClick={() => handleDelete(asset.id)}
+                                                    className="text-red-400 hover:text-red-300 text-sm font-medium transition-colors"
+                                                >
+                                                    Delete
                                                 </button>
                                             )}
                                         </td>
