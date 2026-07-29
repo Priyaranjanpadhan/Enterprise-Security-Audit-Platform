@@ -8,7 +8,8 @@ import Assets from "./pages/Assets.jsx";
 import AuditLogs from "./pages/AuditLogs.jsx";
 import ManageUsers from "./pages/ManageUsers.jsx";
 import ReportEvent from "./pages/ReportEvent.jsx";
-import Profile from "./pages/Profile.jsx"
+import Profile from "./pages/Profile.jsx";
+import ThreatGraph from "./pages/ThreatGraph.jsx";
 
 function App(){
     return(
@@ -30,6 +31,7 @@ function App(){
                     <Route path="/manage-users" element={<ManageUsers />} />
                     <Route path="/report" element={<ReportEvent />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/threat-graph/:id" element={<ThreatGraph />} />
                 </Route>
             </Routes>
         </BrowserRouter>

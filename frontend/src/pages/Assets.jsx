@@ -2,9 +2,11 @@ import React from "react";
 import api from "../services/api.js";
 import {useAuth} from "../context/AuthContext.jsx";
 import AddAsset from "../components/AddAsset";
+import { useNavigate } from "react-router-dom";
 
 function Assets(){
     const {user} = useAuth();
+    const navigate = useNavigate();
     const [assets, setAssets] = React.useState([]);
     const [loading, setLoading] = React.useState(true);
     const [message, setMessage] = React.useState({
@@ -226,6 +228,14 @@ function Assets(){
                                                     Delete
                                                 </button>
                                             )}
+
+                                            {/* The Threat Scan button only visible to admins/technicians */}
+                                            <button
+                                                onClick={() => navigate(`/threat-graph/${asset.id}`)}
+                                                className="text-yellow-400 hover:text-yellow-300 text-sm font-medium transition-colors"
+                                            >
+                                                Scan
+                                            </button>
                                         </td>
                                     )}
                                 </tr>
