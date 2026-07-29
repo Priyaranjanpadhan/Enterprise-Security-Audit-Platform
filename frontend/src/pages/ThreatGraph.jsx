@@ -6,6 +6,8 @@ import ForceGraph2D from "react-force-graph-2d";
 function ThreatGraph(){
     const {id} = useParams(); //Get the root asset ID from URL itself
     const navigate = useNavigate();
+    //This creates a direct hook into the physics engine.
+    //graphRef allows us to reach inside the graph and tweak the physics later.
     const graphRef = React.useRef();
 
     const [graphData, setGraphData] = React.useState({
@@ -25,17 +27,25 @@ function ThreatGraph(){
                 setThreatData(data.threat_analysis);
 
                 //format the data exactly how ther graph engine expects it
+                //It takes the raw, messy boxes of data from your backend and runs them through an assembly line, 
+                //transforming them into the exact, shiny format the graph engine demands.
+                //[ { id: 1, name: "Mac", color: "#0c271632", val: 5 } ]
                 const formattedNodes = data.raw_topology.nodes.map((node) => {
-                    //find if this node has a high risk score
+                    //Your backend gave you two separate lists: nodes (all 50 computers in the building) and threat_analysis (only the 3 computers that are infected).
+                    //As we process Computer A, we must look into the infection list to see if Computer A is in there.
                     const threatInfo = data.threat_analysis.find(t => t.asset_id === node.id);
                     const risk = threatInfo ? threatInfo.risk_score : 0;
 
+                    //This is the translation layer. The graph engine doesn't understand "Tailwind" or "React." 
+                    // It just wants to know: What is my ID, what is my label, what is my hex color, and how big should I be?
+                    //val controls the size of the circle. If the risk is 100%, we make the circle size 5 (bigger). Otherwise, it is size
                     //color coding based on depth and risk
                     let nodeColor = "#10B981"; // Safe Green
                     if(risk === 100) nodeColor = "#EF4444"; // Critical Red
                     else if(risk > 20) nodeColor = "#F97316"; // High Orange
                     else if(risk > 0) nodeColor = "#EAB308"; // Low Yellow
 
+                    //We package everything up into the exact structure the graph engine demanded.
                     return{
                         id: node.id,
                         name: node.name,
@@ -44,6 +54,8 @@ function ThreatGraph(){
                     };
                 });
 
+                //The graph engine needs to know how to draw the cables. It strictly requires objects with exactly two properties: source and target. 
+                // We convert your SQL column names to match what the engine demands.
                 const formattedLinks = data.raw_topology.edges.map(edge => ({
                     source: edge.source_asset_id,
                     target: edge.target_asset_id
@@ -63,9 +75,13 @@ function ThreatGraph(){
         fetchGraph();
     }, [id]);
 
+    //This hook fires after the graph has data.
     React.useEffect(() => {
         if(graphRef.current){
+            //This acts like negative magnets. It tells every node on the screen to push away from all other nodes with a force of -400.
+            //If we didn't have this, all your computers would clump up into a single messy ball in the center of the screen.
             graphRef.current.d3Force('charge').strength(-400);
+            //This tells the "cables" connecting the computers to act like springs that want to rest exactly 100 pixels apart.
             graphRef.current.d3Force('link').distance(100);
         }
     }, [graphData]);
@@ -92,6 +108,7 @@ function ThreatGraph(){
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Left side: The interactive canvas */}
                 <div className="lg:col-span-2 bg-gray-800 border border-gray-700 rounded-lg overflow-hidden h-[600px] flex items-center justify-center">
+                    {/* This is the actual graph component */}
                     <ForceGraph2D 
                         ref={graphRef}
                         width={800}
