@@ -22,12 +22,13 @@ const pgSession = connectPgSimple(session);
 app.use(express.json());
 app.use(
     cors({
-        origin: "http://localhost:5173",
+        origin: process.env.FRONTEND_URL || "http://localhost:5173",
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true //it allows react to receive and send the session cookies
     })
 );
 
+app.set("trust proxy", 1); //by default, browsers block cookies from passing between two different URLs, we must tell express to froce cross-site cookies and trust the cloud load balancer
 app.use(
     session({
         store: new pgSession({
@@ -39,7 +40,10 @@ app.use(
         resave: false, //don't save the session if nothing changes
         saveUninitialized: false, //don't give someone cookies if they are not logged in
         cookie: {
-            secure: false, //false for localhost and true for https
+            //true for render(HTTPS) false for localhost
+            secure: process.env.NODE_ENV === "production",
+            //"none" allows cross-domain cookies, "lax" for localhost
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
             maxAge: 1000 * 60 * 60 * 24 //This calculates how much the cookie will be saved into the browsers memory
         }
     })
@@ -54,7 +58,7 @@ passport.use(
     new Strategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:3000/api/auth/google/callback"
+        callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/api/auth/google/callback"
         // accessToken  -> Temporary key to perform actions on behalf of the user.
         // refreshToken -> Permanent key used to renew the expired access token.
         // profile -> User identity payload (email, photo, name) requested from Google.
