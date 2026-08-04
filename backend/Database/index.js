@@ -6,7 +6,7 @@ env.config();//for working of the process.env. we need this.
 //basic database connection
 // We use Pool and assign it to 'db' so we don't have to change 
 // the db.query() commands in all your other router files!
-const pool = new Pool({
+const db = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl:{
         rejectUnauthorized: false
