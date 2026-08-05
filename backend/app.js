@@ -58,6 +58,9 @@ passport.use(
     new Strategy({
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        //http://localhost:3000 + /api/auth/google/callback
+        //https://enterprise-security-audit-platform.onrender.com](https://enterprise-security-audit-platform.onrender.com) + /api/auth/google/callback
+        //That is exactly how we got [https://enterprise-security-audit-platform.onrender.com/api/auth/google/callback]
         callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/api/auth/google/callback"
         // accessToken  -> Temporary key to perform actions on behalf of the user.
         // refreshToken -> Permanent key used to renew the expired access token.
