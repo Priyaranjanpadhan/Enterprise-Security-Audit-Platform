@@ -7,3 +7,5 @@ const api = axios.create({
 });
 
 export default api;
+//https://enterprise-security-audit-platform.onrender.com/api -> for the server
+//http://localhost:3000/api -> for the local server checking

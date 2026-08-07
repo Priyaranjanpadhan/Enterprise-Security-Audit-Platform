@@ -53,12 +53,14 @@ router.post("/register", async(req, res) => {
 
 router.post("/login", async(req, res) => {
     const {email, password} = req.body;
+    //console.log("Login attempt for email: ", req.body.email);
 
     try{
         const result = await db.query(
             `select * from users
             where email = $1`, [email]
         );
+        //console.log("Database returned this user: ", result.rows);
         //check if user is present or not in database
         if(result.rows.length === 0){
             return res.status(401).json({error: "User not found."});
