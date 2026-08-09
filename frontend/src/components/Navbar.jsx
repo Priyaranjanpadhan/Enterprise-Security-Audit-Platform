@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { Menu, LogOut } from "lucide-react";
 
-function Navbar(){
+function Navbar({ isSidebarOpen, setIsSidebarOpen }){
     const {user, logOut} = useAuth();
     const navigate = useNavigate();
     async function handleLogout(){
@@ -9,7 +10,14 @@ function Navbar(){
         navigate("/login");
     }
     return(
-        <nav className="bg-gray-800 border-b border-gray-700 px-6 py-3 flex justify-between items-center">
+        <nav className="bg-gray-800 border-b border-gray-700 px-6 py-3 flex justify-between items-center relative z-40">
+            {/* the hamburger button, md:hidden class ensures it automatically disappears on desktop screens. */}
+            <button
+                className="p-2 text-gray-600 focus:outline-none md:hidden"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+                <Menu className="w-6 h-6" />
+            </button>
             {/* Logo and title */}
             <Link 
                 to="/"

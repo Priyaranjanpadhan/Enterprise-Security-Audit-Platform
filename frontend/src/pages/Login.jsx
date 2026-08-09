@@ -1,12 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import api from "../services/api.js";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login(){
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [error, setError] = React.useState("");
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const navigate = useNavigate();
     const {login} = useAuth();
@@ -49,15 +51,31 @@ function Login(){
                             required
                         />
                     </div>
-                    <div>
+                    <div className="relative mb-6">
                         <label className="block mb-2 text-sm text-gray-300">Password</label>
-                        <input 
-                            type="password" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full p-2.5 bg-gray-700 border border-gray-600 text-white rounded focus:ring-blue-500 focus:border-blue-500"
-                            required
-                        />
+                        <div className="relative">
+                            <input 
+                                type={showPassword? "text" : "password"} 
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-3 py-2 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                                placeholder="........"
+                                required
+                            />  
+
+                            {/* The Toggle button */}
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white focus:outline-none"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="w-5 h-5" />
+                                ) : (
+                                    <Eye className="w-5 h-5" />
+                                )}
+                            </button>
+                        </div>
                     </div>
 
                     <button 
@@ -66,6 +84,13 @@ function Login(){
                     >
                         Sign in
                     </button>
+
+                    <div className="mt-4 text-center text-sm text-gray-600">
+                        Don't have an account?{" "}
+                        <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
+                            Sign up
+                        </Link>
+                    </div>
                 </form>
             </div>
         </div>

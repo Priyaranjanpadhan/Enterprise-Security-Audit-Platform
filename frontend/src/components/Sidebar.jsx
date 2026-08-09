@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
-function Sidebar(){
+function Sidebar({isSidebarOpen}){
     const{user} = useAuth();
     //useLocation() constantly monitors the address bar at the top of your web browser. The pathname is specifically the part of the URL after the domain name.
     const location = useLocation();
@@ -15,14 +15,14 @@ function Sidebar(){
     }
 
     return(
-        <div className="w-64 bg-gray-800 border-r border-gray-700 min-h-screen p-4">
+        <div className={`fixed inset-y-0 left-0 z-40 w-64 bg-gray-800 border-r border-gray-700 min-h-screen p-4 transform transition-transform duration-300 ease-in-out md:relative md:translate-x-0 pt-20 md:pt-4 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
             <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-2">
                 Menu
             </div>
 
             {/* <Link> tag is a special tool from React Router. It overrides the default browser behavior. When you click it, it tells React: "Do not refresh the page! Just instantly swap out the Dashboard component for the Assets component." */}
             {/* you use an anchor tag like <a href="/assets">. When you click it, the browser wipes the screen white, contacts the server, and downloads a whole new HTML page. */}
-            <ul className="space-y-2">
+            <ul className="space-y-2" onClick={() => setIsSidebarOpen(false)}>
                 <li>
                     <Link to="/" className={getLinkClass("/")}>
                         Dashboard
