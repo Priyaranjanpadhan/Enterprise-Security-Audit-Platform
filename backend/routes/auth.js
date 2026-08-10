@@ -93,6 +93,16 @@ router.post("/login", async(req, res) => {
     }
 });
 
+//check if the user has a valid active session cookie
+router.get("/me", (req, res) => {
+    //req.session.user exists only if they have a valid, unexpired cookie
+    if(req.session && req.session.user){
+        return res.status(200).json({user: req.session.user});
+    } else {
+        return res.status(401).json({error: "Not authenticated."})
+    }
+})
+
 router.post("/logout", (req, res) => {
     //res.session.destroy to kill the session in postgresql
     req.session.destroy((err) => {

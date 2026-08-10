@@ -1,14 +1,14 @@
 import React, { children, useContext } from "react";
-import api from "../services/api";
+import api from "../services/api";//configured axios instance
 
 //create the context
 const AuthContext = React.createContext();
 
-//creating he provider component
+//creating the provider component
 //context makes a global variable type thing instead of moving around from files to files we have a context
 //children is a special React keyword representing whatever is placed inside the opening and closing tags of a component. In main.jsx, <App/> becomes the children.
 //<App/> inside the Provider, we are taking our entire town (the App) and connecting it to the Power Station. Now, every single component inside the App has the potential to access the broadcasted data.
-export const AuthProvider = ({children}) => {
+export function AuthProvider ({children}) {
     const [user, setUser] = React.useState(null);
     const [loading, setLoading] = React.useState(true);//prevents the app from flashing before checking auth
 
@@ -45,6 +45,27 @@ export const AuthProvider = ({children}) => {
             console.error("Failed to log out", err);
         }
     };
+
+    React.useEffect(() => {
+        async function checkAuth(){
+            try{
+                //ping the backend to see if we have a valid cookie
+                const response = await api.get("/auth/me");
+                setUser(response.data.user);
+            } catch(err){
+                //if any error then user is null
+                setUser(null);
+            } finally{
+                setLoading(false);
+            }
+        }
+
+        checkAuth();
+    }, []);
+
+    if(loading) {
+        return <div className="flex h-screen items-center justify-center bg-gray-900 text-white">Loading....</div>;
+    }
 
     return (
         //Everything you put inside that value bracket is being actively broadcasted to the rest of the application.
