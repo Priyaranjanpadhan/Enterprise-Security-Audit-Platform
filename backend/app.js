@@ -71,7 +71,7 @@ passport.use(
         //real magic happens here google just sent us the user's profile, 
         //console.log("Google Profile Data : ", profile);
 
-        console.log(profile);
+        //console.log(profile);
 
         try{
             const email = profile.emails[0].value;
@@ -96,7 +96,7 @@ passport.use(
                 profile.databaseId = result.rows[0].id;
                 profile.roleId = result.rows[0].role_id;
             }
-            console.log(profile);
+            //console.log(profile);
             //hand the profile back to the passport
             return cb(null, profile);
         } catch(err){

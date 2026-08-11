@@ -27,6 +27,11 @@ function Login(){
         }
     };
 
+    function handleGoogleLogin(){
+        // Forcing the browser to navidate to your Render backend Google route
+        window.location.href = "https://enterprise-security-audit-platform.onrender.com/api/auth/google"
+    };
+
     return(
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
@@ -83,6 +88,22 @@ function Login(){
                         className="w-full py-2.5 mt-4 text-white bg-blue-600 rounded hover:bg-blue-700 font-medium transition-colors" 
                     >
                         Sign in
+                    </button>
+
+                    {/* Just a divider */}
+                    <div className="flex items-center my-4">
+                        <div className="flex-grow border-t border-gray-600"></div>
+                        <div className="px-3 text-sm text-gray-400">or</div>
+                        <div className="flex-grow border-t border-gray-600"></div>
+                    </div>
+
+                    {/* The Google Sign-in BUtton */}
+                    <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        className="w-full py-2.5 text-white bg-red-60 rounded hover:bg-red-700 font-medium transition-colors flex items-center justify-center space-x-2"
+                    >
+                        <span>Sign in with Google</span>
                     </button>
 
                     <div className="mt-4 text-center text-sm text-gray-600">

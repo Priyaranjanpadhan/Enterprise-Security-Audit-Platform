@@ -122,13 +122,14 @@ router.get("/google",
 
 router.get("/google/callback", 
     //When the user returns from Google, this passport.authenticate does the heavy lifting. It takes the secret code Google handed the user, talks to Google's servers securely behind the scenes, and this is what triggers the GoogleStrategy code inside app.js to fetch the profile and run the cb (callback).
-    passport.authenticate("google", {failureRedirect: "/login"}), //if they deny the permission then local login
+    passport.authenticate("google", {failureRedirect: "https://enterprise-security-audit-platform.vercel.app/login"}), //if they deny the permission then local login, if they fail, redirect back to Vercel's login page
     (req, res) => {
         //google verified them passport automatically attached their google profile to req.user
-
         req.session.user = {id: req.user.databaseId, name: req.user.displayName, role_id: req.user.roleId};
 
-        res.status(200).json({message: "google login successful!", user: req.session.user});
+        // Redirect the user stratight to your React frontend!
+        //Because the cookie is set, your AuthContext will instantly log them in.
+        res.redirect("https://enterprise-security-audit-platform.vercel.app/");
     }
 );
 

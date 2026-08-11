@@ -23,6 +23,10 @@ function Register(){
             setError(err.response?.data?.message || "Failed to Register.");
         }
     };
+
+    function handleGoogleLogin() {
+        window.location.href = "https://enterprise-security-audit-platform.onrender.com/api/auth/google";
+    }
     return(
         <div className="flex items-center justify-center min-h-screen bg-gray-900">
             <div className="w-full max-w-md p-8 space-y-6 bg-gray-800 rounded-lg shadow-lg border border-gray-700">
@@ -98,6 +102,21 @@ function Register(){
                         Register
                     </button>
                 </form>
+
+                {/* Just a divider */}
+                <div className="flex items-center my-4">
+                    <div className="flex-grow border-t border-gray-600"></div>
+                    <div className="px-3 text-sm text-gray-400">or</div>
+                    <div className="flex-grow border-t border-gray-600"></div>
+                </div>
+
+                <button
+                        type="button"
+                        onClick={handleGoogleLogin}
+                        className="w-full py-2.5 text-white bg-red-600 rounded hover:bg-red-700 font-medium transition-colors flex items-center justify-center space-x-2"
+                    >
+                        <span>Register with Google</span>
+                    </button>
 
                 <div className="text-sm text-center text-gray-400">
                     Already have an account?
