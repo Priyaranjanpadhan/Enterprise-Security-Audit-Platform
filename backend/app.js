@@ -120,8 +120,9 @@ app.use("/api/assets", assetRouter);
 app.use("/api/audit-logs", auditLogRouter);
 app.use("/api/threats", threatRouter);
 
-app.get("/", (req, res) => {
-    res.send("<h1>Hello</h1>")
+//it is needed for the cron-job.org for constant ping so it needs a constant end point to actually look at and not give error
+app.get("/api", (req, res) => {
+    res.status(200).json({status: "Server is awake and running just fine!"});
 });
 
 app.listen(port, () => {
