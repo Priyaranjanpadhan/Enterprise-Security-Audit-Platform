@@ -7,6 +7,16 @@ A full-stack, role-based IT asset management and vulnerability tracking system d
 * **Backend:** Hosted on Render (with automated keep-alive cron jobs)
 * **Database:** PostgreSQL hosted on Supabase
 
+### ⚠️ Important Note for Live Demo (Third-Party Cookies)
+Because this project utilizes a 3-server PaaS architecture with distinct domains for the frontend (`vercel.app`) and backend (`onrender.com`), modern browsers with strict privacy settings (like Google Chrome) will block the session cookie by default due to Cross-Site "Third-Party" Cookie restrictions. 
+
+**To fully test the live demo (login, asset assignment, dashboard):**
+1. Look for the "eye" or "blocked cookie" icon on the far right side of your URL address bar.
+2. Click it and select **"Site not working? Allow cookies"** (or manually allow third-party cookies for this site in your browser settings).
+3. Refresh the page to restore full session capabilities.
+
+*Note: In a true enterprise deployment, this limitation is bypassed by configuring custom DNS records to place both the frontend and backend behind a single, unified root domain (e.g., `app.company.com` and `api.company.com`), ensuring cookies remain First-Party.*
+
 ## 📖 Comprehensive Documentation
 To view the architectural blueprints, database schema planning, and security routing decisions, please see the handwritten engineering notes in the [docs/](./docs) folder:
 * [01 - System Architecture & Deployment](./docs/01-System-Architecture.md)
