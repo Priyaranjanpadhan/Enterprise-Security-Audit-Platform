@@ -29,7 +29,7 @@ function Login(){
 
     function handleGoogleLogin(){
         // Forcing the browser to navidate to your Render backend Google route
-        window.location.href = "https://enterprise-security-audit-platform.onrender.com/api/auth/google"
+        window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
     };
 
     return(

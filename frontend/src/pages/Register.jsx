@@ -25,7 +25,7 @@ function Register(){
     };
 
     function handleGoogleLogin() {
-        window.location.href = "https://enterprise-security-audit-platform.onrender.com/api/auth/google";
+        window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
     }
     return(
         <div className="flex items-center justify-center min-h-screen bg-gray-900">

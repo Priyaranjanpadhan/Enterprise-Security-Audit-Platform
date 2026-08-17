@@ -22,7 +22,7 @@ const pgSession = connectPgSimple(session);
 app.use(express.json());
 app.use(
     cors({
-        origin: process.env.FRONTEND_URL || "http://localhost:5173",
+        origin: [process.env.FRONTEND_URL, "http://localhost:5173", "https://www.priyaranjan.me"], //we are giving the frontend to access any of these three
         methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true //it allows react to receive and send the session cookies
     })
