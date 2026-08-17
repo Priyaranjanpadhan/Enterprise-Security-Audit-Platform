@@ -3,19 +3,14 @@
 A full-stack, role-based IT asset management and vulnerability tracking system design for enterprise cybersecurity teams. This platform enforces strict data isolation, tracks the end-to-end lifecycle of security flaws, and maintains audit trail of all user actions. 
 
 ## 🚀 Live Demo
-* **Frontend:** [https://enterprise-security-audit-platform.vercel.app]
-* **Backend:** Hosted on Render (with automated keep-alive cron jobs)
+* **Frontend:** [https://priyaranjan.me]
+* **Backend API:** `https://api.priyaranjan.me/api`
 * **Database:** PostgreSQL hosted on Supabase
 
-### ⚠️ Important Note for Live Demo (Third-Party Cookies)
-Because this project utilizes a 3-server PaaS architecture with distinct domains for the frontend (`vercel.app`) and backend (`onrender.com`), modern browsers with strict privacy settings (like Google Chrome) will block the session cookie by default due to Cross-Site "Third-Party" Cookie restrictions. 
+### 🌎 Enterprise-Grade Domain Architecture
+In a true enterprise deployment, security and seamless user experience are paramount. To bypass modern browser restrictions on 3rd party cookies, this project utilizes custom DNS routing to unify a decoupled Paas architecture.
 
-**To fully test the live demo (login, asset assignment, dashboard):**
-1. Look for the "eye" or "blocked cookie" icon on the far right side of your URL address bar.
-2. Click it and select **"Site not working? Allow cookies"** (or manually allow third-party cookies for this site in your browser settings).
-3. Refresh the page to restore full session capabilities.
-
-*Note: In a true enterprise deployment, this limitation is bypassed by configuring custom DNS records to place both the frontend and backend behind a single, unified root domain (e.g., `app.company.com` and `api.company.com`), ensuring cookies remain First-Party.*
+While the frontend is hosted on Vercel and backend on Render, they are bound together under a single root domain(`priyaranjan.me` and `api.priyaranjan.me`). This ensures that secure, cross-origin session cookies remain First-party, providing flawless authenticaion without requiring users to manulally lower their browser privacy settings.  
 
 ## 📖 Comprehensive Documentation
 To view the architectural blueprints, database schema planning, and security routing decisions, please see the handwritten engineering notes in the [docs/](./docs) folder:
@@ -30,6 +25,7 @@ To view the architectural blueprints, database schema planning, and security rou
 * **Backend:** Node.js, Express.js
 * **Database:** PostgreSQL (Supabase)
 * **Authentication:** Express-Session, Bcrypt, Google OAuth 2.0 (Passport.js)
+* ***Domain Management;* Custom routing via Namcheap
 
 ## 🔐 Key Features
 * **Role-Based Access Control (RBAC):** Strict permission enforcement routing users into Admin, Auditor, or Technician workflows.
