@@ -44,7 +44,7 @@ app.use(
             secure: process.env.NODE_ENV === "production",
             //"none" allows cross-domain cookies, "lax" for localhost
             sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-            maxAge: 1000 * 60 * 60 * 24 //This calculates how much the cookie will be saved into the browsers memory
+            maxAge: 1000 * 60 * 60 * 24 * 30 //This calculates how much the cookie will be saved into the browsers memory
         }
     })
 );
